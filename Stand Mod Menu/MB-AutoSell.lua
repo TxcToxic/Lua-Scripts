@@ -11,7 +11,7 @@ menu.divider(menu_root, "Cargo Auto Sell")
 menu.slider(menu_root, 'ASC Seconds', {"ascseconds"}, "Sets the seconds to wait before selling a new crate", 5, 60, 5, 1, function(value)
     seconds = value
 end)
-menu.toggle_loop(menu_root, 'Auto Sell Crate', {"loopsellacrate"}, 'Auto sell a crate all'.. seconds ..'seconds', function()
+menu.toggle_loop(menu_root, 'Auto Sell Crate', {"loopsellacrate"}, 'Auto sell a crate all x seconds', function()
     menu.trigger_commands("sellacrate")
     util.yield(seconds * 1000)
 end)
