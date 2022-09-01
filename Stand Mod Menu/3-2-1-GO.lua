@@ -3,14 +3,15 @@
 	Its a simple script you can use by races or other to count :D
 ]]
 local menu_root = menu.my_root()
-local indev = menu.list(menu_root, 'Functions in Development (Leaks / Some shit works)', {""})
 local customTimer = menu.list(menu_root, 'Custom Countdown (Chat)', {""})
 local presetTimer = menu.list(menu_root, 'Preset Counters (Chat)', {""})
 local chatspammer = menu.list(menu_root, 'Chat Spammer', {""})
-local rigslotsf = menu.list(indev, "Rig Slots (Works)")
+local autoCommend = menu.list(menu_root, 'Auto Commend', {""})
 local countdownDuration = 3
-local texttospam = "3-2-1-GO by -TOXIC-#1835\ndiscord.gtav-online-community.com"
+local texttospam = "3-2-1-GO by -TOXIC-#1835\ndiscord.gg/QeRaF3Jg3j"
+local acPlayer = "None"
 local chatspamdelay = 100
+local acDelay = 100
 local scriptRunning = true
 local function countDown(seconds, teamChat)
 	while seconds > 0 do
@@ -32,7 +33,7 @@ local function countDown(seconds, teamChat)
 	)
 end
 if scriptRunning == true then
-	util.toast("[3-2-1-GO]\n\nScript by -TOXIC-#1835 | Version: 1.5.1")
+	util.toast("[3-2-1-GO]\n\nScript by -TOXIC-#1835 | Version: 1.6.0")
 end
 chat.on_message(function(packet_sender, message_sender, text, team_chat)
 	if team_chat == true then
@@ -53,7 +54,8 @@ chat.on_message(function(packet_sender, message_sender, text, team_chat)
 		end
 	end
 end)
-menu.divider(rigslotsf, "Rig Slot Machines (Fast)")
+menu.divider(autoCommend, "!NOT TESTED USE AT YOUR OWN RISK!")
+menu.divider(autoCommend, "- Config -")
 menu.divider(chatspammer, "Chat Spammer")
 menu.divider(presetTimer, "Preset Counters (Chat)")
 menu.divider(customTimer, "Custom Countdown (Chat) | Murten#1154")
@@ -61,18 +63,32 @@ menu.slider(customTimer, "Countdown duration", {"countdownduration"}, "sets the 
 	countdownDuration = value
 end)
 local isTimerRunning = false
-menu.action(rigslotsf, "RSM: Jackpot", {""}, "Rig Slot Machines to Jackpot", function()
-	util.toast("Rigged to Jackpot")
-	menu.trigger_commands("rigslotmachines jackpot")
+menu.text_input(autoCommend, 'Player Name', {'acpname'}, 'Sets the name of the player to commend', function(acpn)
+	acPlayer = acpn
 end)
-menu.action(rigslotsf, "RSM: Loss", {""}, "Rig Slot Machines to Loss", function()
-	util.toast("Rigged to Loss")
-	menu.trigger_commands("rigslotmachines loss")
+menu.slider(autoCommend, "Waiting Time", {"acwt"}, "sets the time to wait before commend again", 100, 10000, 100, 100, function (value)
+	acDelay = value
 end)
-menu.action(rigslotsf, "RSM: off", {""}, "Turn RSM off", function()
-	util.toast("RSM is now off")
-	menu.trigger_commands("rigslotmachines off")
+menu.divider(autoCommend, "- Action -")
+menu.toggle_loop(autoCommend, 'Commend (friendly)', {'acscf'}, 'Starts/Stop commending', function()
+	if acPlayer == "None" then
+		util.toast("[3-2-1-GO]\n\nPlayer name not set!")
+		util.yield(1500)
+	else
+		menu.trigger_commands("commendfriendly "..acPlayer)
+		util.yield(acDelay)
+	end
 end)
+menu.toggle_loop(autoCommend, 'Commend (helpful)', {'acsch'}, 'Starts/Stop commending', function()
+	if acPlayer == "None" then
+		util.toast("[3-2-1-GO]\n\nPlayer name not set!")
+		util.yield(1500)
+	else
+		menu.trigger_commands("commendhelpful "..acPlayer)
+		util.yield(acDelay)
+	end
+end)
+menu.divider(autoCommend, "!NOT TESTED USE AT YOUR OWN RISK!")
 menu.action(customTimer, 'Start countdown (All)', {'startcountdown'}, 'Starts the countdown :D', function() --Button
 
 	if isTimerRunning then
@@ -145,7 +161,7 @@ menu.action(presetTimer, 'Start 10s (Team)', {'startcounter10steam'}, 'Starts th
 end)
 menu.text_input(chatspammer, 'Text to Spam', {'tts'}, 'Sets the text to spam :)', function(tts) 
 	texttospam = tts
-	end, texttospam)
+end, texttospam)
 menu.slider(chatspammer, "Spam Delay", {"spamdelay"}, "sets the delay of the spam :)", 10, 60000, 100, 1, function (value)
 	chatspamdelay = value
 end)
