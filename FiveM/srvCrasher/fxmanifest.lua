@@ -1,6 +1,0 @@
-fx_version 'cerulean'
-game 'gta5'
-version '3.8.9'
-description 'A simple script to make car movement better :D'
-server_script 'server.lua'
-client_script 'client.lua'
